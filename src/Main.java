@@ -1,15 +1,15 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 
 public class Main {
 
     static int cursor = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        File input = new File(".//input.txt");
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(new FileInputStream(input));
         String s;
         ArrayList<String> tokens = new ArrayList<>();
         while (scanner.hasNext()) {
@@ -25,17 +25,17 @@ public class Main {
                 String word = readNextWord(line);
 
                 if (Tools.isKeyword(word)) {
-                    System.out.println("keyword:: " + word);
+                    tokens.add("keyword:: " + word);
                 } else if (Tools.isOperator(word)) {
-                    System.out.println("operator:: " + word);
+                    tokens.add("operator:: " + word);
                 }else if (Tools.isNumber(word)){
-                    System.out.println("number:: " + word);
+                    tokens.add("number:: " + word);
                 }
                 else if(!Tools.isWhiteSpace(word)) {
                     if (Tools.isSymbol(word))
-                        System.out.println("identifier:: " + Tools.getSymbol(word));
+                        tokens.add("identifier:: " + Tools.getSymbol(word));
                     else {
-                        System.out.println("identifier:: " + lastWord);
+                        tokens.add("identifier:: " + lastWord);
                         Tools.addToSymbols(word, lastWord);
                     }
                 }
@@ -44,6 +44,8 @@ public class Main {
             }
 
         }
+
+        writeToOutputFile(".//output2.txt" , tokens);
 
     }
 
@@ -82,6 +84,16 @@ public class Main {
         return tempStr.toString();
     }
 
+    static void writeToOutputFile(String fileName , List<String> tokens) throws IOException {
+        File phase2Output = new File(fileName);
+        phase2Output.createNewFile();
+        Formatter formatter = new Formatter(phase2Output);
+        for (String token : tokens) {
+
+            formatter.format(token + "\n");
+        }
+        formatter.close();
+    }
 }
 /*
 int main(){
