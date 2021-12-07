@@ -33,9 +33,9 @@ public class Main {
                 }
                 else if(!Tools.isWhiteSpace(word)) {
                     if (Tools.isSymbol(word))
-                        tokens.add("identifier:: " + Tools.getSymbol(word));
+                        tokens.add("id:: " + word);
                     else {
-                        tokens.add("identifier:: " + lastWord);
+                        tokens.add("id:: " + word);
                         Tools.addToSymbols(word, lastWord);
                     }
                 }
