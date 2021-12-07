@@ -31,6 +31,20 @@ public class Tools {
         return num >= '0' && num <= '9';
     }
 
+    public static boolean isIdentifier(String phrase) {
+        if (!((phrase.charAt(0) >= 'a' && phrase.charAt(0) <= 'z')
+                || (phrase.charAt(0)>= 'A' && phrase.charAt(0) <= 'Z')
+                || phrase.charAt(0) == '_'))
+            return false;
+        for (int i = 1; i < phrase.length(); i++) {
+            if (!((phrase.charAt(i) >= 'a' && phrase.charAt(i) <= 'z')
+                    || (phrase.charAt(i) >= 'A' && phrase.charAt(i) <= 'Z')
+                    || (phrase.charAt(i) >= '0' && phrase.charAt(i) <= '9')
+                    || phrase.charAt(i) == '_'))
+                return false;
+        }
+        return true;
+    }
     public static boolean isWhiteSpace(String s){
         return s.matches("^\\s*$");
     }
