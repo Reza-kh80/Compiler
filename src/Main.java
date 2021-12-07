@@ -12,8 +12,10 @@ public class Main {
         Scanner scanner = new Scanner(new FileInputStream(input));
         String s;
         ArrayList<String> tokens = new ArrayList<>();
-        while (scanner.hasNext()) {
+        int lineNum = -1;
+        MAIN: while (scanner.hasNext()) {
             cursor = 0;
+            lineNum++;
             s = scanner.nextLine();
             char[] line = s.toCharArray();
             if (s.length() == 0)
@@ -38,6 +40,9 @@ public class Main {
                         tokens.add("id:: " + word);
                         Tools.addToSymbols(word, lastWord);
                     }
+                }else {
+                    System.out.println("error in line " + lineNum);
+                    break MAIN;
                 }
                 lastWord = word;
 
