@@ -12,7 +12,7 @@ public class Main {
         Scanner scanner = new Scanner(new FileInputStream(input));
         String s;
         ArrayList<String> tokens = new ArrayList<>();
-        int lineNum = -1;
+        int lineNum = 0;
         MAIN: while (scanner.hasNext()) {
             cursor = 0;
             lineNum++;
@@ -33,16 +33,19 @@ public class Main {
                 }else if (Tools.isNumber(word)){
                     tokens.add("number:: " + word);
                 }
-                else if(!Tools.isWhiteSpace(word)) {
+                else if(Tools.isIdentifier(word)) {
                     if (Tools.isSymbol(word))
                         tokens.add("id:: " + word);
-                    else {
+                    else if (Tools.isVarType(lastWord)) {
                         tokens.add("id:: " + word);
                         Tools.addToSymbols(word, lastWord);
+                    }else {
+                        System.out.println("error in line " + lineNum + " : " + word + " is not define" );
+                        return;
                     }
-                }else {
-                    System.out.println("error in line " + lineNum);
-                    break MAIN;
+                }else if (!Tools.isWhiteSpace(word)){
+                    System.out.println("error in line " + lineNum + " : " + word + " is not define" );
+                    return;
                 }
                 lastWord = word;
 

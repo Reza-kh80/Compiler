@@ -10,6 +10,8 @@ public class Tools {
             "if","int","long","register","return","short","signed",
             "sizeof","static","struct","switch","typedef","union",
             "unsigned","void","volatile","while"));
+    private static final HashSet<String> varTypes = new HashSet<>(Arrays.asList("int" , "float" , "double" , "short" , "long"
+            , "byte" , "char" , "bool"));
     private static final HashSet<String> operator = new HashSet<>(Arrays.asList("(",")","{","}","[","]",
             ";","=","==","!=","+","-","++","--","<",">","<=",">=","&","&&","|","||"));
 
@@ -25,22 +27,31 @@ public class Tools {
         return isOperator(String.valueOf(opt));
     }
     public static boolean isNumber(String n){
-        if (n.isEmpty())
+        try {
+            Double.parseDouble(n);
+            return true;
+        } catch (NumberFormatException e) {
             return false;
-        char num = n.charAt(0);
-        return num >= '0' && num <= '9';
+        }
+    }
+
+    public static boolean isVarType(String word){
+        return varTypes.contains(word);
     }
 
     public static boolean isIdentifier(String phrase) {
-        if (!((phrase.charAt(0) >= 'a' && phrase.charAt(0) <= 'z')
-                || (phrase.charAt(0)>= 'A' && phrase.charAt(0) <= 'Z')
-                || phrase.charAt(0) == '_'))
+        if (phrase.isEmpty())
+            return false;
+        char[] p = phrase.toCharArray();
+        if (!((p[0] >= 'a' && p[0] <= 'z')
+                || (p[0] >= 'A' && p[0] <= 'Z')
+                || p[0] == '_'))
             return false;
         for (int i = 1; i < phrase.length(); i++) {
-            if (!((phrase.charAt(i) >= 'a' && phrase.charAt(i) <= 'z')
-                    || (phrase.charAt(i) >= 'A' && phrase.charAt(i) <= 'Z')
-                    || (phrase.charAt(i) >= '0' && phrase.charAt(i) <= '9')
-                    || phrase.charAt(i) == '_'))
+            if (!((p[i] >= 'a' && p[i] <= 'z')
+                    || (p[i] >= 'A' && p[i] <= 'Z')
+                    || (p[i] >= '0' && p[i] <= '9')
+                    || p[i] == '_'))
                 return false;
         }
         return true;

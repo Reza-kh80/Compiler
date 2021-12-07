@@ -1,6 +1,6 @@
 int main(){
 int a=3;
-float b=5;
+double b = .5f;
 int c=7;
 int d=a+c;
 for(int i=0;i<3;i++){
