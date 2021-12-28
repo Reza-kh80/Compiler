@@ -25,6 +25,7 @@ https://www.dropbox.com/s/sndvi1pcum2gq6z/Compiler.zip?dl=1
 
 ``` java -jar Compiler.jar ```
 
+تمام فایل کلاس ها هم در پوشه src موجود است
 
 ### Code:
 
