@@ -14,6 +14,14 @@ operator:: =
 number:: .5f
 operator:: ;
 keyword:: int
+id:: p
+operator:: =
+string_literal:: "fddf"
+string_literal:: " "
+operator:: +
+string_literal:: "dfdf"
+operator:: ;
+keyword:: int
 id:: c
 operator:: =
 number:: 7
@@ -37,7 +45,8 @@ operator:: <
 number:: 3
 operator:: ;
 id:: i
-operator:: ++
+operator:: +=
+number:: 2
 operator:: )
 operator:: {
 operator:: }

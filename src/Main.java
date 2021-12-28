@@ -21,30 +21,43 @@ public class Main {
             if (s.length() == 0)
                 continue;
 
-
             String lastWord = "";
             while (cursor < line.length) {
-                String word = readNextWord(line);
+                if (line[cursor] == '\"') {
+                    StringBuilder stringLiteral = new StringBuilder("\"");
+                    do {
+                        cursor++;
+                        if (cursor >= line.length) {
+                            System.out.println("\" expected in line " + lineNum);
+                            return;
+                        }
+                        stringLiteral.append(line[cursor]);
+                    } while (line[cursor] != '\"');
 
+                    tokens.add("string_literal:: " + stringLiteral.toString());
+                    cursor++;
+                    continue;
+                }
+
+                String word = readNextWord(line);
                 if (Tools.isKeyword(word)) {
                     tokens.add("keyword:: " + word);
                 } else if (Tools.isOperator(word)) {
                     tokens.add("operator:: " + word);
-                }else if (Tools.isNumber(word)){
+                } else if (Tools.isNumber(word)) {
                     tokens.add("number:: " + word);
-                }
-                else if(Tools.isIdentifier(word)) {
+                } else if (Tools.isIdentifier(word)) {
                     if (Tools.isSymbol(word))
                         tokens.add("id:: " + word);
                     else if (Tools.isVarType(lastWord)) {
                         tokens.add("id:: " + word);
                         Tools.addToSymbols(word, lastWord);
-                    }else {
-                        System.out.println("error in line " + lineNum + " : " + word + " is not define" );
+                    } else {
+                        System.out.println("error in line " + lineNum + " : " + word + " is not define");
                         return;
                     }
-                }else if (!Tools.isWhiteSpace(word)){
-                    System.out.println("error in line " + lineNum + " : " + word + " is not define" );
+                } else if (!Tools.isWhiteSpace(word)) {
+                    System.out.println("error in line " + lineNum + " : " + word + " is not define");
                     return;
                 }
                 lastWord = word;
@@ -53,7 +66,7 @@ public class Main {
 
         }
 
-        writeToOutputFile(".//output2.txt" , tokens);
+        writeToOutputFile(".//output2.txt", tokens);
 
     }
 
@@ -61,8 +74,8 @@ public class Main {
         StringBuilder tempStr = new StringBuilder();
         while (cursor < line.length && !Tools.isWhiteSpace(line[cursor])) {
 
-            if (Tools.isOperator(line[cursor])){
-                if (tempStr.toString().isEmpty()){
+            if (Tools.isOperator(line[cursor])) {
+                if (tempStr.toString().isEmpty()) {
                     tempStr.append(line[cursor]);
                     cursor++;
                     if (cursor >= line.length) {
@@ -74,15 +87,13 @@ public class Main {
                     if (Tools.isOperator(temp2)) {
                         cursor++;
                         return temp2;
-                    }
-                    else {
+                    } else {
                         return tempStr.toString();
                     }
 
-                }
-                else
+                } else
                     return tempStr.toString();
-            }else {
+            } else {
 
                 tempStr.append(line[cursor]);
                 cursor++;
@@ -92,7 +103,7 @@ public class Main {
         return tempStr.toString();
     }
 
-    static void writeToOutputFile(String fileName , List<String> tokens) throws IOException {
+    static void writeToOutputFile(String fileName, List<String> tokens) throws IOException {
         File phase2Output = new File(fileName);
         phase2Output.createNewFile();
         Formatter formatter = new Formatter(phase2Output);
