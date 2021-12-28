@@ -25,7 +25,7 @@ https://www.dropbox.com/s/sndvi1pcum2gq6z/Compiler.zip?dl=1
 
 ``` java -jar Compiler.jar ```
 
-فایل output2.txt که حاوی خروجی است در همان پوشه ساخته شد.
+فایل output2.txt که حاوی خروجی است در همان پوشه ساخته شد. 
 
 تمام فایل کلاس ها هم در پوشه src موجود است
 
