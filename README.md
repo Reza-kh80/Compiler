@@ -14,6 +14,18 @@ University Project
 
 ![DFA](https://s4.uupload.ir/files/screenshot_2021-11-29_170022_4q1d.jpg)
 
+
+## نحوه‌ی اجرای خان دوم:
+ابتدا از طریق لینک زیر فایل Compiler.zip را دانلود کنید
+سپس فایل فشرده را استخراج کنید
+
+https://trainbit.com/files/9421461484/Compiler.zip
+
+cmd را باز کرده و به مسیری که فایل فشرده را استحراج کردید بروید و عبارت زیر را قرار دهید
+‍‍‍‍‍```
+java -jar Compiler.jar
+```
+
 ### Code:
 #### Main
 ``` 
@@ -124,7 +136,7 @@ public class Main {
 }
 ```
 
-### Tools:
+#### Tools
 ```
 import java.util.Arrays;
 import java.util.HashMap;
@@ -205,3 +217,5 @@ public class Tools {
 }
 
 ```
+
+
