@@ -2,8 +2,8 @@ import java.io.*;
 import java.util.*;
 
 
-public class Main {
-
+public class Phase2 {
+    static List<String> tokens , identifiers , numbers , stringLiterals;
     static int cursor = 0;
 
     public static void main(String[] args) throws IOException {
@@ -11,7 +11,12 @@ public class Main {
 
         Scanner scanner = new Scanner(new FileInputStream(input));
         String s;
-        ArrayList<String> tokens = new ArrayList<>();
+
+        tokens = new ArrayList<>();
+        identifiers = new ArrayList<>();
+        numbers = new ArrayList<>();
+        stringLiterals = new ArrayList<>();
+
         int lineNum = 0;
         while (scanner.hasNext()) {
             cursor = 0;
@@ -35,6 +40,7 @@ public class Main {
                     } while (line[cursor] != '\"');
 
                     tokens.add("string_literal:: " + stringLiteral.toString());
+                    stringLiterals.add(stringLiteral.toString());
                     cursor++;
                     continue;
                 }
@@ -46,11 +52,13 @@ public class Main {
                     tokens.add("operator:: " + word);
                 } else if (Tools.isNumber(word)) {
                     tokens.add("number:: " + word);
+                    numbers.add(word);
                 } else if (Tools.isIdentifier(word)) {
                     if (Tools.isSymbol(word))
                         tokens.add("id:: " + word);
                     else if (Tools.isVarType(lastWord)) {
                         tokens.add("id:: " + word);
+                        identifiers.add(word);
                         Tools.addToSymbols(word, lastWord);
                     } else {
                         System.out.println("error in line " + lineNum + " : " + word + " is not define");

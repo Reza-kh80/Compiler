@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class Tools {
     private static final HashSet<String> keyWords = new HashSet<>(Arrays.asList(
@@ -10,6 +11,10 @@ public class Tools {
             , "byte", "char", "bool"));
     private static final HashSet<String> operator = new HashSet<>(Arrays.asList("(", ")", "{", "}", "[", "]" ,
             ";", "=", "==", "!=", "+", "-", "++", "--", "<", ">", "<=", ">=", "&", "&&", "|", "||", "+=", "/=", "-=", "*="));
+
+    public static HashSet<String> getVarTypes() {
+        return  varTypes;
+    }
 
     private static final HashMap<String, String> symbolTable = new HashMap<>();
 

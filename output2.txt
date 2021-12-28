@@ -17,7 +17,6 @@ keyword:: int
 id:: p
 operator:: =
 string_literal:: "fddf"
-string_literal:: " "
 operator:: +
 string_literal:: "dfdf"
 operator:: ;
