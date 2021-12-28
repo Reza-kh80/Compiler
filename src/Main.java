@@ -13,7 +13,7 @@ public class Main {
         String s;
         ArrayList<String> tokens = new ArrayList<>();
         int lineNum = 0;
-        MAIN: while (scanner.hasNext()) {
+        while (scanner.hasNext()) {
             cursor = 0;
             lineNum++;
             s = scanner.nextLine();
