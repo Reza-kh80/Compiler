@@ -19,7 +19,7 @@ University Project
 ابتدا از طریق لینک زیر فایل Compiler.zip را دانلود کنید
 سپس فایل فشرده را استخراج کنید
 
-https://trainbit.com/files/9421461484/Compiler.zip
+https://www.dropbox.com/s/sndvi1pcum2gq6z/Compiler.zip?dl=1
 
 cmd را باز کرده و به مسیری که فایل فشرده را استحراج کردید بروید و عبارت زیر را قرار دهید
 ‍‍‍‍‍```
@@ -27,7 +27,9 @@ java -jar Compiler.jar
 ```
 
 ### Code:
+
 #### Main
+
 ``` 
 import java.io.*;
 import java.util.*;
