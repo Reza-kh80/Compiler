@@ -21,7 +21,7 @@ University Project
 
 https://www.dropbox.com/s/sndvi1pcum2gq6z/Compiler.zip?dl=1
 
-cmd را باز کرده و به مسیری که فایل فشرده را استحراج کردید بروید و عبارت زیر را قرار دهید
+برای اجرای فایل .jar cmd را باز کرده و به مسیری که فایل فشرده را استحراج کردید بروید و عبارت زیر را قرار دهید
 
 ``` java -jar Compiler.jar ```
 
