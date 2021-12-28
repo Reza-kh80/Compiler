@@ -10,6 +10,6 @@ University Project
 سازی تبدیل گردید و DFA حاصل پیاده سازی شد.
 
 
-DFA:
+### DFA:
 
 ![DFA](https://s4.uupload.ir/files/screenshot_2021-11-29_170022_4q1d.jpg)
