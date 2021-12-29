@@ -149,6 +149,39 @@ class LL1Table {
         tRow = new HashMap<>();
         //....................
 
+        //<expression>
+        List<String>[] expStructure = allGrammars.get("<expression>");
+        tRow.put("(", expStructure);
+        table.put("<expression>", tRow);
+        for (String id : Phase2.identifiers) {
+            tRow.put(id, expStructure);
+        }
+        for (String num : Phase2.numbers) {
+            tRow.put(num, expStructure);
+        }
+        for (String str : Phase2.stringLiterals) {
+            tRow.put(str, expStructure);
+        }
+        tRow = new HashMap<>();
+        //...................
+
+        //<expression'>
+        List<String>[] expPrimStructure = allGrammars.get("<expression'>");
+        List<String>[] epsilon = new List[1];
+        epsilon[0] = Arrays.asList(Grammar.EPSILON);
+        String arr[] = {">=", "<=", ">", "<", "==", ";", ")"};
+        table.put("<expression'>", tRow);
+        for(String op : arr) {
+            tRow.put(op, epsilon);
+        }
+        String arr2[] = {"+", "-"};
+        for(String op1 : arr2) {
+            if (op1.equals("+")) {
+                //tRow.put(op1, )
+            } else {
+
+            }
+        }
 
         
 
