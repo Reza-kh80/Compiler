@@ -20,13 +20,12 @@ public class Phase3 {
         LL1Table.printTable();
 
 
-
     }
 }
 
 
 class Grammar {
-    static final String EPSILON = "ɛ", ID = "?ID?", NUMBER = "?NUMBER?", STRING_LITERAL = "?STRING?";
+    static final String EPSILON = "ɛ" , ID = "?ID?", NUMBER = "?NUMBER?", STRING_LITERAL = "?STRING?";
     static HashMap<String, List<String>[]> allGrammars = new HashMap<>();
     String name;
     List<String>[] structures;
@@ -119,9 +118,15 @@ class LL1Table {
         List<String>[] conditionStructure = allGrammars.get("<condition>");
         Map<String, List<String>[]> tRow = new HashMap<>();
         tRow.put("(", conditionStructure);
-        tRow.put(Grammar.ID, conditionStructure);
-        tRow.put(Grammar.NUMBER, conditionStructure);
-        tRow.put(Grammar.STRING_LITERAL, conditionStructure);
+        for (String id : Phase2.identifiers) {
+            tRow.put(id , conditionStructure);
+        }
+        for (String number: Phase2.numbers){
+            tRow.put(number , conditionStructure);
+        }
+        for (String literal : Phase2.stringLiterals) {
+            tRow.put(literal , conditionStructure);
+        }
         table.put("<condition>", tRow);
 
         //<relational operator>
@@ -143,6 +148,7 @@ class LL1Table {
         table.put("<var declaration>", tRow);
         tRow = new HashMap<>();
         //....................
+
 
         
 
