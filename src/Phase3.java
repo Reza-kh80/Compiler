@@ -22,7 +22,7 @@ public class Phase3 {
 
     }
 }
-
+//pushing
 
 class Grammar {
     static final String EPSILON = "ɛ" , ID = "?ID?", NUMBER = "?NUMBER?", STRING_LITERAL = "?STRING?";
@@ -36,7 +36,7 @@ class Grammar {
         this.structures = structures;
         allGrammars.put(name, structures);
     }
-
+    // function importgrammer
     static void importGrammar() {
         new Grammar("<program>", Arrays.asList("int main", "(", ")", "{", "<statements>", "}"));
 

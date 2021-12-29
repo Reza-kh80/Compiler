@@ -38,7 +38,7 @@ public class Tools {
             return false;
         }
     }
-
+//comment
     public static boolean isVarType(String word) {
         return varTypes.contains(word);
     }
