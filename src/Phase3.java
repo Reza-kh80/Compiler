@@ -177,13 +177,75 @@ class LL1Table {
         String arr2[] = {"+", "-"};
         for(String op1 : arr2) {
             if (op1.equals("+")) {
-                //tRow.put(op1, )
+
             } else {
 
             }
         }
 
-        
+        tRow = new HashMap<>();
+        //.................
+
+        //<term>
+        List<String>[] termStructure = allGrammars.get("<term>");
+        tRow.put("(", termStructure);
+        table.put("<term>", tRow);
+        for (String id : Phase2.identifiers) {
+            tRow.put(id, termStructure);
+        }
+        for (String num : Phase2.numbers) {
+            tRow.put(num, termStructure);
+        }
+        for (String str : Phase2.stringLiterals) {
+            tRow.put(str, termStructure);
+        }
+        tRow = new HashMap<>();
+        //....................
+
+        //<term'>
+        List<String>[] termPrimStructure = allGrammars.get("<term'>");
+        String arr3[] = {">=", "<=", ">", "<", "==", "+", "-", "("};
+        table.put("<term'>", tRow);
+        for(String op : arr3) {
+            tRow.put(op, epsilon);
+        }
+        String arr4[] = {"*", "/"};
+        for(String op1 : arr4) {
+            if (op1.equals("*")) {
+
+            } else {
+
+            }
+        }
+
+        tRow = new HashMap<>();
+        //..................
+
+        //<factor>
+        List<String>[] factorStructure = allGrammars.get("<factor>");
+        tRow.put("(", factorStructure);
+        table.put("<factor>", tRow);
+        for (String id : Phase2.identifiers) {
+            tRow.put(id, factorStructure);
+        }
+        for (String num : Phase2.numbers) {
+            tRow.put(num, factorStructure);
+        }
+        for (String str : Phase2.stringLiterals) {
+            tRow.put(str, factorStructure);
+        }
+        tRow = new HashMap<>();
+        //................
+
+        //<statements>
+        List<String>[] stateStructure = allGrammars.get("<statements>");
+        for (String varType : Tools.getVarTypes()) {
+            tRow.put(varType, stateStructure);
+        }
+        table.put("<statements>", tRow);
+        for (String id : Phase2.identifiers) {
+            tRow.put(id, stateStructure);
+        }
 
 
 
