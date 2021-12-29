@@ -37,7 +37,7 @@ class Grammar {
         this.structures = structures;
         allGrammars.put(name, structures);
     }
-
+    // function importgrammer
     static void importGrammar() {
         new Grammar("<program>", Arrays.asList("int main", "(", ")", "{", "<statements>", "}"));
 
