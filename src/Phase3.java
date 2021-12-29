@@ -63,12 +63,12 @@ class Grammar {
 
         new Grammar("<term>", Arrays.asList("<factor>", "<term'>"));
 
+        new Grammar("<term'>", Arrays.asList("*", "<factor>", "<term'>"),
+                Arrays.asList("/", "<factor>", "<term'>"), singletonList(EPSILON));
 
         new Grammar("<factor>", singletonList(ID), singletonList(NUMBER), Arrays.asList("(", "<expression>", ")")
                 , singletonList(STRING_LITERAL));
 
-        new Grammar("<expression'>", Arrays.asList("*", "<factor>", "<term'>"),
-                Arrays.asList("/", "<factor>", "<term'>"), singletonList(EPSILON));
 
         new Grammar("<statements>", Arrays.asList("<statement>", "<statements>"));
 
