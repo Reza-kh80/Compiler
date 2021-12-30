@@ -128,9 +128,11 @@ class LL1Table {
             tRow.put(literal , conditionStructure);
         }
         table.put("<condition>", tRow);
+        tRow = new HashMap<>();
+        //....................
+
 
         //<relational operator>
-        tRow = new HashMap<>();
         List<String>[] relationOperators = allGrammars.get("<relational operator>");
         for (List<String> list : relationOperators) {
             List[] lists = new List[1];
@@ -152,7 +154,6 @@ class LL1Table {
         //<expression>
         List<String>[] expStructure = allGrammars.get("<expression>");
         tRow.put("(", expStructure);
-        table.put("<expression>", tRow);
         for (String id : Phase2.identifiers) {
             tRow.put(id, expStructure);
         }
@@ -162,6 +163,7 @@ class LL1Table {
         for (String str : Phase2.stringLiterals) {
             tRow.put(str, expStructure);
         }
+        table.put("<expression>", tRow);
         tRow = new HashMap<>();
         //...................
 
@@ -170,7 +172,6 @@ class LL1Table {
         List<String>[] epsilon = new List[1];
         epsilon[0] = Arrays.asList(Grammar.EPSILON);
         String arr[] = {">=", "<=", ">", "<", "==", ";", ")"};
-        table.put("<expression'>", tRow);
         for(String op : arr) {
             tRow.put(op, epsilon);
         }
@@ -182,14 +183,13 @@ class LL1Table {
 
             }
         }
-
+        table.put("<expression'>", tRow);
         tRow = new HashMap<>();
         //.................
 
         //<term>
         List<String>[] termStructure = allGrammars.get("<term>");
         tRow.put("(", termStructure);
-        table.put("<term>", tRow);
         for (String id : Phase2.identifiers) {
             tRow.put(id, termStructure);
         }
@@ -200,12 +200,12 @@ class LL1Table {
             tRow.put(str, termStructure);
         }
         tRow = new HashMap<>();
+        table.put("<term>", tRow);
         //....................
 
         //<term'>
         List<String>[] termPrimStructure = allGrammars.get("<term'>");
         String arr3[] = {">=", "<=", ">", "<", "==", "+", "-", "("};
-        table.put("<term'>", tRow);
         for(String op : arr3) {
             tRow.put(op, epsilon);
         }
@@ -217,14 +217,13 @@ class LL1Table {
 
             }
         }
-
+        table.put("<term'>", tRow);
         tRow = new HashMap<>();
         //..................
 
         //<factor>
         List<String>[] factorStructure = allGrammars.get("<factor>");
         tRow.put("(", factorStructure);
-        table.put("<factor>", tRow);
         for (String id : Phase2.identifiers) {
             tRow.put(id, factorStructure);
         }
@@ -234,6 +233,7 @@ class LL1Table {
         for (String str : Phase2.stringLiterals) {
             tRow.put(str, factorStructure);
         }
+        table.put("<factor>", tRow);
         tRow = new HashMap<>();
         //................
 
