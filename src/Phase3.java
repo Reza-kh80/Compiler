@@ -250,20 +250,34 @@ class LL1Table {
         //<statement>
         List<String>[] stateStructure = allGrammars.get("<statement>");
         for(String vartype : Tools.getVarTypes()) {
-            tRow.put(vartype, stateStructure);
+            List[] vartp = new List[1];
+            vartp[0] = singletonList(stateStructure[1]);
+            tRow.put(vartype, vartp);
         }
         for (String id : Phase2.numbers) {
-            tRow.put(id, stateStructure);
+            List[] iden = new List[1];
+            iden[0] = singletonList(stateStructure[0]);
+            tRow.put(id, iden);
         }
         String arr5[] = {"if", "for", "while"};
         for (String op : arr5) {
             if (op.equals("if")) {
-
+                List[] listIf = new List[1];
+                listIf[0] = singletonList(stateStructure[2]);
+                tRow.put(op, listIf);
+            } else if(op.equals("for")) {
+                List[] listIf = new List[1];
+                listIf[0] = singletonList(stateStructure[3]);
+                tRow.put(op, listIf);
+            } else {
+                List[] listWhile = new List[1];
+                listWhile[0] = singletonList(stateStructure[4]);
+                tRow.put(op, listWhile);
             }
         }
         table.put("<statement>", tRow);
-
         tRow = new HashMap<>();
+        //........................................
 
         //<statements>
         List<String>[] statesStructure = allGrammars.get("<statements>");
@@ -273,8 +287,60 @@ class LL1Table {
         for (String id : Phase2.identifiers) {
             tRow.put(id, statesStructure);
         }
-
+        String arr6[] = {"if", "for", "while"};
+        for (String op : arr6) {
+            if (op.equals("if")) {
+                tRow.put(op, statesStructure);
+            } else if(op.equals("for")) {
+                tRow.put(op, statesStructure);
+            } else {
+                tRow.put(op, statesStructure);
+            }
+        }
         table.put("<statements>", tRow);
+        //........................................
+
+        //<opt>
+        List<String>[] optStructure = allGrammars.get("<opt>");
+        String arr7[] = {"+", "-", "*", "/"};
+        for (String op : arr7) {
+            if (op.equals("*")) {
+                List[] _M_ = new List[1];
+                _M_[0] = singletonList(optStructure[3]);
+                tRow.put(op, _M_);
+            } else if (op.equals("/")) {
+                List[] _D_ = new List[1];
+                _D_[0] = singletonList(optStructure[2]);
+                tRow.put(op, _D_);
+            } else if(op.equals("+")) {
+                List[] _P_ = new List[1];
+                _P_[0] = singletonList(optStructure[0]);
+                tRow.put(op, _P_);
+            } else {
+                List[] _MM_ = new List[1];
+                _MM_[0] = singletonList(optStructure[1]);
+                tRow.put(op, _MM_);
+            }
+        }
+        table.put("<opt>", tRow);
+        tRow = new HashMap<>();
+
+        //..............................
+
+        //<var_type>
+        List<String>[] vartypeStructure = allGrammars.get("<var_type>");
+        int i = 0;
+        for (String vartype : Tools.getVarTypes()) {
+            List[] Type = new List[1];
+            Type[0] = singletonList(vartypeStructure[i]);
+            tRow.put(vartype, Type);
+            i++;
+        }
+        table.put("<var_type>", tRow);
+        tRow = new HashMap<>();
+        //...................
+
+
 
 
 
