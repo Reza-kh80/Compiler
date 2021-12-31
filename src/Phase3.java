@@ -58,9 +58,11 @@ class Grammar {
 
         new Grammar("<expression>", Arrays.asList("<term>", "<expression’>"));
 
+        /////////
         new Grammar("<expression'>", Arrays.asList("+", "<term>", "<expression'>"),
                 Arrays.asList("-", "<term>", "<expression'>"), singletonList(EPSILON));
 
+        ////////
         new Grammar("<term>", Arrays.asList("<factor>", "<term'>"));
 
         new Grammar("<term'>", Arrays.asList("*", "<factor>", "<term'>"),
@@ -178,9 +180,13 @@ class LL1Table {
         String arr2[] = {"+", "-"};
         for(String op1 : arr2) {
             if (op1.equals("+")) {
-
+                List[] listPlus = new List[1];
+                listPlus[0] = singletonList(expPrimStructure[0]);
+                tRow.put(op1, listPlus);
             } else {
-
+                List[] listMinus = new List[1];
+                listMinus[0] = singletonList(expPrimStructure[1]);
+                tRow.put(op1, listMinus);
             }
         }
         table.put("<expression'>", tRow);
@@ -212,9 +218,13 @@ class LL1Table {
         String arr4[] = {"*", "/"};
         for(String op1 : arr4) {
             if (op1.equals("*")) {
-
+                List[] listMult = new List[1];
+                listMult[0] = singletonList(termPrimStructure[0]);
+                tRow.put(op1, listMult);
             } else {
-
+                List[] listDivide = new List[1];
+                listDivide[0] = singletonList(termPrimStructure[1]);
+                tRow.put(op1, listDivide);
             }
         }
         table.put("<term'>", tRow);
@@ -237,15 +247,6 @@ class LL1Table {
         tRow = new HashMap<>();
         //................
 
-        //<statements>
-        List<String>[] stateStructure = allGrammars.get("<statements>");
-        for (String varType : Tools.getVarTypes()) {
-            tRow.put(varType, stateStructure);
-        }
-        table.put("<statements>", tRow);
-        for (String id : Phase2.identifiers) {
-            tRow.put(id, stateStructure);
-        }
 
 
 
@@ -270,6 +271,7 @@ class LL1Table {
             System.out.println();
         }
     }
+
 
     static List<String>[] getStructure(String terminal, String row) {
         return table.get(terminal).get(row);
