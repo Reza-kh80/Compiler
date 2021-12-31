@@ -247,6 +247,34 @@ class LL1Table {
         tRow = new HashMap<>();
         //................
 
+        //<statement>
+        List<String>[] stateStructure = allGrammars.get("<statement>");
+        for(String vartype : Tools.getVarTypes()) {
+            tRow.put(vartype, stateStructure);
+        }
+        for (String id : Phase2.numbers) {
+            tRow.put(id, stateStructure);
+        }
+        String arr5[] = {"if", "for", "while"};
+        for (String op : arr5) {
+            if (op.equals("if")) {
+
+            }
+        }
+        table.put("<statement>", tRow);
+
+        tRow = new HashMap<>();
+
+        //<statements>
+        List<String>[] statesStructure = allGrammars.get("<statements>");
+        for (String varType : Tools.getVarTypes()) {
+            tRow.put(varType, statesStructure);
+        }
+        for (String id : Phase2.identifiers) {
+            tRow.put(id, statesStructure);
+        }
+
+        table.put("<statements>", tRow);
 
 
 
