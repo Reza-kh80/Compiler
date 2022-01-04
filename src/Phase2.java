@@ -27,7 +27,7 @@ public class Phase2 {
                 continue;
 
             String lastWord = "";
-            while (cursor < line.length) {
+            while (cursor < line.length) {// "int if"
                 if (line[cursor] == '\"') {
                     StringBuilder stringLiteral = new StringBuilder("\"");
                     do {
@@ -78,8 +78,8 @@ public class Phase2 {
 
     }
 
-    static String readNextWord(char[] line) {
-        StringBuilder tempStr = new StringBuilder();
+    static String readNextWord(char[] line) {// i++;
+        StringBuilder tempStr = new StringBuilder(); //+
         while (cursor < line.length && !Tools.isWhiteSpace(line[cursor])) {
 
             if (Tools.isOperator(line[cursor])) {
@@ -90,7 +90,7 @@ public class Phase2 {
                         return tempStr.toString();
                     }
 
-                    String temp2 = tempStr.toString() + line[cursor];
+                    String temp2 = tempStr.toString()+ line[cursor]; //++
 
                     if (Tools.isOperator(temp2)) {
                         cursor++;
