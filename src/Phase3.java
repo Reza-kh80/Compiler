@@ -88,7 +88,7 @@ class Grammar {
         new Grammar("<statement>", singletonList("<assignment>"), singletonList("<var declaration>"),
                 singletonList("<if statement>"), singletonList("<for statement>"), singletonList("<while statement>"));
 
-        new Grammar("<assignment>", Arrays.asList(ID, "=", "<expression>", ";"), Arrays.asList(ID, "++", ";"),
+        createGrammar("<assignment>", Arrays.asList(ID, "=", "<expression>", ";"), Arrays.asList(ID, "++", ";"),
                 Arrays.asList(ID, "--", ";"), Arrays.asList(ID, "<opt>", "=", "<expression>", ";"));
 
         new Grammar("<opt>", singletonList("+"), singletonList("-"), singletonList("/"), singletonList("*"));
