@@ -82,7 +82,7 @@ public class Phase2 {
         StringBuilder tempStr = new StringBuilder(); //+
         while (cursor < line.length && !Tools.isWhiteSpace(line[cursor])) {
 
-            if (Tools.isOperator(line[cursor])) {
+            if (Tools.isOperator(line[cursor]) || line[cursor] == '!') {
                 if (tempStr.toString().isEmpty()) {
                     tempStr.append(line[cursor]);
                     cursor++;
