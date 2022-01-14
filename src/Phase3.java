@@ -238,8 +238,8 @@ class LL1Table {
         for (String str : Phase2.stringLiterals) {
             tRow.put(str, termStructure);
         }
-        tRow = new HashMap<>();
         table.put("<term>", tRow);
+        tRow = new HashMap<>();
         //....................
 
         //<term'>
@@ -291,7 +291,7 @@ class LL1Table {
             vartp[0] = singletonList(stateStructure[1]);
             tRow.put(vartype, vartp);
         }
-        for (String id : Phase2.numbers) {
+        for (String id : Phase2.identifiers) {
             List[] iden = new List[1];
             iden[0] = singletonList(stateStructure[0]);
             tRow.put(id, iden);
@@ -378,7 +378,14 @@ class LL1Table {
 
         //...................
 
+        for (String id : Phase2.identifiers){
+            List<String>[] list2 = new List[]{ Arrays.asList(id, "=", "<expression>", ";"), Arrays.asList(id, "++", ";"),
+                    Arrays.asList(id, "--", ";"), Arrays.asList(id, "<opt>", "=", "<expression>", ";") };
+            tRow.put(id, list2);
 
+        }
+        table.put("<assignment>", tRow);
+        tRow = new HashMap<>();
     }
 
     static void printTable() {
