@@ -106,7 +106,6 @@ class Grammar {
     }
 
 
-
     private static void createGrammar(String grammarName, List<String>... textHolders) {
         List<String>[] struct = new List[textHolders.length * Phase2.identifiers.size()];
         int index = 0;
@@ -267,16 +266,20 @@ class LL1Table {
 
         //<factor>
         List<String>[] factorStructure = allGrammars.get("<factor>");
-        tRow.put("(", factorStructure);
-        for (String id : Phase2.identifiers) {
-            tRow.put(id, factorStructure);
+        List<String>[] list = new List[1];
+        list[0] = factorStructure[factorStructure.length - 1];
+        tRow.put("(", list);
+        ArrayList<String> total = new ArrayList<>();
+        total.addAll(Phase2.identifiers);
+        total.addAll(Phase2.numbers);
+        total.addAll(Phase2.stringLiterals);
+
+        for (String check : total){
+            List<String>[] FS = new List[1];
+            FS[0] = Arrays.asList(check);
+            tRow.put(check, FS);
         }
-        for (String num : Phase2.numbers) {
-            tRow.put(num, factorStructure);
-        }
-        for (String str : Phase2.stringLiterals) {
-            tRow.put(str, factorStructure);
-        }
+
         table.put("<factor>", tRow);
         tRow = new HashMap<>();
         //................
@@ -372,6 +375,7 @@ class LL1Table {
         }
         table.put("<var_type>", tRow);
         tRow = new HashMap<>();
+
         //...................
 
 
