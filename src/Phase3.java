@@ -55,8 +55,9 @@ class Grammar {
         new Grammar("<relational operator>", singletonList("<"), singletonList(">"), singletonList("<="),
                 singletonList(">="), singletonList("=="));
 
-        createGrammar(Phase2.identifiers, ID, "<var declaration>",
-                Arrays.asList("<var_type>", ID, ";"), Arrays.asList("<var_type>", ID, "=", "<expression>", ";"));
+        createGrammar("<var declaration>",
+                Arrays.asList("<var_type>",
+                        ID, ";"), Arrays.asList("<var_type>", ID, "=", "<expression>", ";"));
 
         new Grammar("<expression>", Arrays.asList("<term>", "<expression’>"));
 
@@ -106,14 +107,14 @@ class Grammar {
 
 
 
-    private static void createGrammar(List<String> nones, String code, String grammarName, List<String>... textHolders) {
-        List<String>[] struct = new List[textHolders.length * nones.size()];
+    private static void createGrammar(String grammarName, List<String>... textHolders) {
+        List<String>[] struct = new List[textHolders.length * Phase2.identifiers.size()];
         int index = 0;
         for (List<String> rule : textHolders) {
-            for (String none : nones) {
+            for (String none : Phase2.identifiers) {
                 List<String> idRule = new ArrayList<>();
                 for (String part : rule) {
-                    if (part.equals(code))
+                    if (part.equals(ID))
                         idRule.add(none);
                     else
                         idRule.add(part);
