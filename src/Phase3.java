@@ -148,6 +148,7 @@ class LL1Table {
         table.put("<program>", Map.of("int main", allGrammars.get("<program>")));
         table.put("<if statement>", Map.of("if", allGrammars.get("<if statement>")));
         table.put("<for statement>", Map.of("for", allGrammars.get("<for statement>")));
+        table.put("<while statement>", Map.of("while", allGrammars.get("<while statement>")));
 
         //"<condition>"
         List<String>[] conditionStructure = allGrammars.get("<condition>");
@@ -378,11 +379,11 @@ class LL1Table {
 
         //...................
 
+        //<assignment>
         for (String id : Phase2.identifiers){
             List<String>[] list2 = new List[]{ Arrays.asList(id, "=", "<expression>", ";"), Arrays.asList(id, "++", ";"),
                     Arrays.asList(id, "--", ";"), Arrays.asList(id, "<opt>", "=", "<expression>", ";") };
             tRow.put(id, list2);
-
         }
         table.put("<assignment>", tRow);
         tRow = new HashMap<>();
