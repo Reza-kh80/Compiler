@@ -106,7 +106,7 @@ public class Phase3 {
                     } else if(stackTop.equals("<assignment>")) {
                         String t = tokens.get(i + 1).split(":: ")[1];
                         System.out.println(t);
-                        if(t.equals("=")) { //++ 1 --2 =3
+                        if(t.equals("=")) {
                             theStruct = struct[0];
                         } else if(t.equals("++")) {
                             theStruct = struct[1];
@@ -114,20 +114,6 @@ public class Phase3 {
                             theStruct = struct[2];
                         } else {
                             theStruct = struct[3];
-                        }
-                    } else if(stackTop.equals("<opt>")) {
-                        String t = tokens.get(i + 1).split(":: ")[1];
-                        System.out.println(t);
-                        if(t.equals("=")) {
-                            theStruct = struct[0];
-                        } else if(t.equals("+")) {
-                            theStruct = struct[1];
-                        } else if(t.equals("-")) {
-                            theStruct = struct[2];
-                        } else if(t.equals("/")) {
-                            theStruct = struct[3];
-                        } else {
-                            theStruct = struct[4];
                         }
                     }
 
