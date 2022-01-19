@@ -247,6 +247,7 @@ class LL1Table {
         table.put("<program>", Map.of("int", allGrammars.get("<program>")));
         table.put("<if statement>", Map.of("if", allGrammars.get("<if statement>")));
         table.put("<for statement>", Map.of("for", allGrammars.get("<for statement>")));
+        table.put("<while statement>", Map.of("while", allGrammars.get("<while statement>")));
 
         //"<condition>"
         List<String>[] conditionStructure = allGrammars.get("<condition>");
