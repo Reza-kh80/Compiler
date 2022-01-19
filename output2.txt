@@ -11,8 +11,15 @@ operator:: ;
 keyword:: double
 id:: b
 operator:: =
-number:: .5f
+number:: .5
 operator:: ;
+keyword:: if
+operator:: (
+id:: b
+operator:: !=
+number:: 3
+operator:: )
+operator:: {
 keyword:: int
 id:: p
 operator:: =
@@ -20,6 +27,7 @@ string_literal:: "fddf"
 operator:: +
 string_literal:: "dfdf"
 operator:: ;
+operator:: }
 keyword:: int
 id:: c
 operator:: =

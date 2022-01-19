@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Tools {
     private static final HashSet<String> keyWords = new HashSet<>(Arrays.asList(
-            "main", "char","double", "else", "float", "for",
+            "int main" , "main", "char","double", "else", "float", "for",
             "if", "int", "long", "short", "while"));
     private static final HashSet<String> varTypes = new HashSet<>(Arrays.asList("int", "float", "double", "short", "long"
             , "byte", "char", "bool"));
