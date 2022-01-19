@@ -220,7 +220,7 @@ class Grammar {
         createGrammar("<assignment>", Arrays.asList(ID, "=", "<expression>", ";"), Arrays.asList(ID, "++", ";"),
                 Arrays.asList(ID, "--", ";"), Arrays.asList(ID, "<opt>", "=", "<expression>", ";"));
 
-        new Grammar("<opt>", singletonList("+"), singletonList("-"), singletonList("/"), singletonList("*"));
+        new Grammar("<opt>", singletonList("+="), singletonList("-="), singletonList("/="), singletonList("*="));
 
 
         List<String> varTypes = new ArrayList<>(Tools.getVarTypes());
@@ -471,17 +471,17 @@ class LL1Table {
 
         //<opt>
         List<String>[] optStructure = allGrammars.get("<opt>");
-        String arr7[] = {"+", "-", "*", "/"};
+        String arr7[] = {"+=", "-=", "*=", "/="};
         for (String op : arr7) {
-            if (op.equals("*")) {
+            if (op.equals("*=")) {
                 List[] _M_ = new List[1];
                 _M_[0] = optStructure[3];
                 tRow.put(op, _M_);
-            } else if (op.equals("/")) {
+            } else if (op.equals("/=")) {
                 List[] _D_ = new List[1];
                 _D_[0] = optStructure[2];
                 tRow.put(op, _D_);
-            } else if (op.equals("+")) {
+            } else if (op.equals("+=")) {
                 List[] _P_ = new List[1];
                 _P_[0] = optStructure[0];
                 tRow.put(op, _P_);
