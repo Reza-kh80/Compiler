@@ -218,7 +218,7 @@ class Grammar {
                 singletonList("<if statement>"), singletonList("<for statement>"), singletonList("<while statement>"));
 
         createGrammar("<assignment>", Arrays.asList(ID, "=", "<expression>", ";"), Arrays.asList(ID, "++", ";"),
-                Arrays.asList(ID, "--", ";"), Arrays.asList(ID, "<opt>", "=", "<expression>", ";"));
+                Arrays.asList(ID, "--", ";"), Arrays.asList(ID, "<opt>", "<expression>", ";"));
 
         new Grammar("<opt>", singletonList("+="), singletonList("-="), singletonList("/="), singletonList("*="));
 
@@ -382,11 +382,11 @@ class LL1Table {
         for (String op1 : arr4) {
             if (op1.equals("*")) {
                 List[] listMult = new List[1];
-                listMult[0] = singletonList(termPrimStructure[0]);
+                listMult[0] = termPrimStructure[0];
                 tRow.put(op1, listMult);
             } else {
                 List[] listDivide = new List[1];
-                listDivide[0] = singletonList(termPrimStructure[1]);
+                listDivide[0] = termPrimStructure[1];
                 tRow.put(op1, listDivide);
             }
         }
@@ -512,7 +512,7 @@ class LL1Table {
 
         for (String id : Phase2.identifiers) {
             List<String>[] list2 = new List[]{Arrays.asList(id, "=", "<expression>", ";"), Arrays.asList(id, "++", ";"),
-                    Arrays.asList(id, "--", ";"), Arrays.asList(id, "<opt>", "=", "<expression>", ";")};
+                    Arrays.asList(id, "--", ";"), Arrays.asList(id, "<opt>", "<expression>", ";")};
             tRow.put(id, list2);
 
         }
