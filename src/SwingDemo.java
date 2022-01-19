@@ -1,20 +1,24 @@
-import javax.swing.JFrame;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class SwingDemo {
 
-    private static void showTree(DefaultMutableTreeNode node) {
+    public static void showTree(DefaultMutableTreeNode node) {
         JFrame frame = new JFrame("Tree");
         JTree tree = new JTree(node);
+        JScrollPane scrollPane = new JScrollPane(tree);
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
-        frame.add(tree);
-        frame.setSize(550,400);
+        frame.getContentPane().setLayout(new BorderLayout());
 
+
+        frame.setContentPane(scrollPane);
+        frame.setSize(1500,700);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

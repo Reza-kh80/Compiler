@@ -1,4 +1,6 @@
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.IOException;
+import java.sql.Array;
 import java.util.*;
 
 import static java.util.Collections.singletonList;
@@ -26,17 +28,22 @@ public class Phase3 {
 
     private static void parse() {
         Stack<String> stack = new Stack<>();
+        Stack<DefaultMutableTreeNode> nodeStack = new Stack<>();
         stack.push("<program>");
+        DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode("<program>");
+        nodeStack.push(treeRoot);
         List<String> tokens = Phase2.tokens;
         System.out.println("Tokens: " + tokens);
 
         int i = 0;
         while (i < tokens.size()) {
+            System.out.println("\n");
             String stackTop = stack.lastElement();
             String[] theToken = tokens.get(i).split(":: ");
-            System.out.println("theToken: " + Arrays.toString(theToken) + " stackTop: " + stackTop);
+            System.out.println("theToken: " +theToken[1] + " stackTop: " + stackTop);
             System.out.println("Stack: " + stack);
             if (stackTop.equals(theToken[1])) {
+                nodeStack.pop();
                 stack.pop();
                 i++;
                 continue;
@@ -83,7 +90,7 @@ public class Phase3 {
                         }
                     } else if (stackTop.equals("<if statement>")) {
                         for (int j = i+1; j < tokens.size(); j++) {
-                            String t = tokens.get(j);
+                            String t = tokens.get(j).split(":: ")[1];
                             if (t.equals("if")) {
                                 theStruct = struct[0];
                                 break;
@@ -108,17 +115,28 @@ public class Phase3 {
                 }
 
                 stack.pop();
+                DefaultMutableTreeNode treeNode = nodeStack.pop();
                 System.out.println(theStruct);
                 if (!theStruct.contains(Grammar.EPSILON)) {
+                    ArrayList<DefaultMutableTreeNode> children = new ArrayList<>();
                     for (int j = theStruct.size() - 1; j > -1; j--) {
-                        stack.push(theStruct.get(j));
+                        String st = theStruct.get(j);
+                        stack.push(st);
+                        DefaultMutableTreeNode d = new DefaultMutableTreeNode(st);
+                        nodeStack.push(d);
+                        children.add(0 , d);
                     }
+                    for (DefaultMutableTreeNode child : children) {
+                        treeNode.add(child);
+                    }
+
                 }
 
             }
-            System.out.println("\n");
+
         }
 
+        SwingDemo.showTree(treeRoot);
     }
 }
 //pushing
