@@ -9,7 +9,7 @@ public class Tools {
             "if", "int", "long", "short", "while"));
     private static final HashSet<String> varTypes = new HashSet<>(Arrays.asList("int", "float", "double", "short", "long"
             , "byte", "char", "bool"));
-    private static final HashSet<String> operator = new HashSet<>(Arrays.asList("(", ")", "{", "}", "[", "]" ,
+    private static final HashSet<String> operator = new HashSet<>(Arrays.asList("(", ")", "{", "}", "[", "]" , "*" , "/" ,
             ";", "=", "==", "!=", "+", "-", "++", "--", "<", ">", "<=", ">=", "&", "&&", "|", "||", "+=", "/=", "-=", "*="));
 
     public static HashSet<String> getVarTypes() {
