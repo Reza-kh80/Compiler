@@ -48,5 +48,6 @@
 
 [Compiler.apk](https://www.dropbox.com/s/cgknx32b7p1arz5/Compiler.apk?dl=1)
 
-![Compiler gif](https://www.dropbox.com/s/ibgt0usf25iymxe/Untitled%20Project.gif?dl=1)
+<img src="https://www.dropbox.com/s/ibgt0usf25iymxe/Untitled%20Project.gif?dl=1
+"/>
 
