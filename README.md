@@ -48,4 +48,4 @@
 
 [Compiler.apk](https://www.dropbox.com/s/cgknx32b7p1arz5/Compiler.apk?dl=1)
 
-[Compiler.gif](https://github.com/CompilerTeam4/Compiler/blob/master/Untitled%20Project.gif)
+[Compiler.gif](https://raw.githubusercontent.com/CompilerTeam4/Compiler/master/Untitled%20Project.gif)
