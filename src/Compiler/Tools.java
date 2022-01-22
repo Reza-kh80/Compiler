@@ -1,11 +1,17 @@
+package Compiler;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 public class Tools {
+    public static String LEXICAL_ANALYSIS = "Lexical analysis" , SYNTAX_ANALYSIS = "syntax analysis" , SEMANTIC_ANALYSIS = "semantic analysis";
     private static final HashSet<String> keyWords = new HashSet<>(Arrays.asList(
-            "int main" , "main", "char","double", "else", "float", "for",
+            "main" , "char","double", "else", "float", "for",
             "if", "int", "long", "short", "while"));
     private static final HashSet<String> varTypes = new HashSet<>(Arrays.asList("int", "float", "double", "short", "long"
             , "byte", "char", "bool"));
@@ -16,7 +22,7 @@ public class Tools {
         return  varTypes;
     }
 
-    private static final HashMap<String, String> symbolTable = new HashMap<>();
+    static HashMap<String, String> symbolTable;
 
     public static boolean isKeyword(String word) {
         return keyWords.contains(word);
@@ -82,4 +88,25 @@ public class Tools {
         return symbolTable.containsKey(name);
     }
 
+
+    static void writeTokensToOutputFile(String outputFileName , List<String> tokens) throws IOException {
+        Formatter formatter = Tools.createOutPutFile(outputFileName);
+        formatter.format("........" + Tools.LEXICAL_ANALYSIS + " Output" + "........" );
+        for (String token : tokens) {
+            formatter.format(token + "\n");
+        }
+        formatter.close();
+    }
+
+    private static Formatter createOutPutFile( String outputFileName) throws IOException {
+        File phase2Output = new File(outputFileName);
+        phase2Output.createNewFile();
+        return new Formatter(phase2Output);
+    }
+
+    static void writeErrorToFile(String tag , String outputFileName,String error) throws IOException {
+        Formatter formatter = createOutPutFile(outputFileName);
+        formatter.format(tag + " Error: " + error);
+        formatter.close();
+    }
 }

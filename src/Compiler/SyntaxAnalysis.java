@@ -1,18 +1,34 @@
-import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.IOException;
-import java.sql.Array;
-import java.util.*;
+package Compiler;
 
 import static java.util.Collections.singletonList;
-import static java.util.Collections.sort;
+import static Compiler.SyntaxAnalysis.identifiers;
+import static Compiler.SyntaxAnalysis.numbers;
+import static Compiler.SyntaxAnalysis.print;
+import static Compiler.SyntaxAnalysis.stringLiterals;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
-public class Phase3 {
+public class SyntaxAnalysis {
+    static ArrayList<String> identifiers;
+    static List<String> numbers, stringLiterals;
+    static boolean testMode = false;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void start(String inputFileName, String outputFileName) throws IOException {
 
-        Phase2.main(null);
-
+        identifiers = new ArrayList<>();
+        numbers = new ArrayList<>();
+        stringLiterals = new ArrayList<>();
+        LexicalAnalysis.start(inputFileName, outputFileName);
 
         //import grammar:
         Grammar.importGrammar();
@@ -23,45 +39,49 @@ public class Phase3 {
         LL1Table.printTable();
 
 
-        parse();
+        parse(outputFileName);
     }
 
-    private static void parse() {
+    private static void parse(String outputFileName) throws IOException {
+        List<String> tokens = LexicalAnalysis.tokens;
+
+        print("..........PARS...........");
+        print("Tokens: " + tokens);
+
         Stack<String> stack = new Stack<>();
         Stack<DefaultMutableTreeNode> nodeStack = new Stack<>();
         stack.push("<program>");
         DefaultMutableTreeNode treeRoot = new DefaultMutableTreeNode("<program>");
         nodeStack.push(treeRoot);
-        List<String> tokens = Phase2.tokens;
-        System.out.println("Tokens: " + tokens);
 
         int i = 0;
         while (i < tokens.size()) {
-            System.out.println("\n");
+            print("\n");
             String stackTop = stack.lastElement();
             String[] theToken = tokens.get(i).split(":: ");
-            System.out.println("theToken: " +theToken[1] + " stackTop: " + stackTop);
-            System.out.println("Stack: " + stack);
+            print("theToken: " + theToken[1] + " stackTop: " + stackTop);
+            print("Stack: " + stack);
             if (stackTop.equals(theToken[1])) {
                 nodeStack.pop();
                 stack.pop();
                 i++;
                 continue;
             } else if (!Grammar.allGrammars.containsKey(stackTop)) {
-                System.err.print(theToken[1] + " The stack top does not match with the token");
-                System.exit(1);
+                Tools.writeErrorToFile(Tools.SYNTAX_ANALYSIS,
+                        outputFileName, "Stack top does not match with the token" + "The token: " + theToken[1] + " Stack top: " + stackTop);
+                return;
             }
             List<String>[] struct = LL1Table.getStructure(stackTop, theToken[1]);
             if (struct == null) {
-                System.err.print(theToken[1] + "  " + stackTop + " This cell in table is empty");
-                System.exit(1);
+                Tools.writeErrorToFile(Tools.SYNTAX_ANALYSIS,
+                        outputFileName, "This cell in table is empty: " + "[" + theToken[1] + "," + stackTop + "]");
+                return;
             } else {
                 List<String> theStruct = null;
 
                 if (struct.length == 1) {
                     theStruct = struct[0];
-                }
-                else {
+                } else {
 
                     if (stackTop.equals("<var declaration>")) {
                         boolean hasEqual = false;
@@ -74,9 +94,9 @@ public class Phase3 {
                             } else if (t.equals(";"))
                                 break;
                         }
-                        System.out.println("hasEqual : " + hasEqual);
+                        print("hasEqual : " + hasEqual);
                         String v = tokens.get(i + 1).split(":: ")[1];
-                        System.out.println("variable: " + v);
+                        print("variable: " + v);
                         for (List<String> str : struct) {
                             if (v.equals(str.get(1))) {
                                 if (str.size() < 4 && !hasEqual) {
@@ -89,13 +109,12 @@ public class Phase3 {
                             }
                         }
                     } else if (stackTop.equals("<if statement>")) {
-                        for (int j = i+1; j < tokens.size(); j++) {
+                        for (int j = i + 1; j < tokens.size(); j++) {
                             String t = tokens.get(j).split(":: ")[1];
                             if (t.equals("if")) {
                                 theStruct = struct[0];
                                 break;
-                            }
-                            else if (t.equals("else")) {
+                            } else if (t.equals("else")) {
                                 theStruct = struct[1];
                                 break;
                             }
@@ -103,21 +122,21 @@ public class Phase3 {
                         if (theStruct == null)
                             theStruct = struct[0];
 
-                    }else if (stackTop.equals("<for statement>")){
-                        String t = tokens.get(i+2).split(":: ")[1];
-                        System.out.println(t);
+                    } else if (stackTop.equals("<for statement>")) {
+                        String t = tokens.get(i + 2).split(":: ")[1];
+                        print(t);
                         if (Tools.isVarType(t))
                             theStruct = struct[1];
                         else
                             theStruct = struct[0];
-                    } else if(stackTop.equals("<assignment>")) {
+                    } else if (stackTop.equals("<assignment>")) {
                         String t = tokens.get(i + 1).split(":: ")[1];
-                        System.out.println(t);
-                        if(t.equals("=")) {
+                        print(t);
+                        if (t.equals("=")) {
                             theStruct = struct[0];
-                        } else if(t.equals("++")) {
+                        } else if (t.equals("++")) {
                             theStruct = struct[1];
-                        } else if(t.equals("--")) {
+                        } else if (t.equals("--")) {
                             theStruct = struct[2];
                         } else {
                             theStruct = struct[3];
@@ -128,7 +147,7 @@ public class Phase3 {
 
                 stack.pop();
                 DefaultMutableTreeNode treeNode = nodeStack.pop();
-                System.out.println(theStruct);
+                print(theStruct.toString());
                 if (!theStruct.contains(Grammar.EPSILON)) {
                     ArrayList<DefaultMutableTreeNode> children = new ArrayList<>();
                     for (int j = theStruct.size() - 1; j > -1; j--) {
@@ -136,7 +155,7 @@ public class Phase3 {
                         stack.push(st);
                         DefaultMutableTreeNode d = new DefaultMutableTreeNode(st);
                         nodeStack.push(d);
-                        children.add(0 , d);
+                        children.add(0, d);
                     }
                     for (DefaultMutableTreeNode child : children) {
                         treeNode.add(child);
@@ -148,10 +167,21 @@ public class Phase3 {
 
         }
 
-        SwingDemo.showTree(treeRoot);
+        System.out.println(outputFileName + " successfully parsed");
+        SwingDemo.showTree(treeRoot, outputFileName);
+    }
+
+    static void print(String s) {
+        if (testMode) {
+            System.out.println(s);
+        }
+    }
+
+    static void print() {
+        print("");
     }
 }
-//pushing
+
 
 class Grammar {
     static final String EPSILON = "ɛ", ID = "?ID?", NUMBER = "?NUMBER?", STRING_LITERAL = "?STRING?";
@@ -173,7 +203,7 @@ class Grammar {
         new Grammar("<if statement>", Arrays.asList("if", "(", "<condition>", ")", "{", "<statements>", "}"),
                 Arrays.asList("if", "(", "<condition>", ")", "{", "<statements>", "}", "else", "{", "<statements>", "}"));
 
-        new Grammar("<for statement>", Arrays.asList("for", "(", "<assignment>", "<condition>", ";", "<assignment>", ")", "{", "<statements>", "}"),
+        new Grammar("<for statement>", Arrays.asList("for", "(", "<assignment>", ";", "<condition>", ";", "<assignment>", ")", "{", "<statements>", "}"),
                 Arrays.asList("for", "(", "<var declaration>", "<condition>", ";", "<assignment>", ")", "{", "<statements>", "}"));
 
         new Grammar("<while statement>", Arrays.asList("while", "(", "<condition>", ")", "{", "<statements>", "}"));
@@ -181,7 +211,7 @@ class Grammar {
         new Grammar("<condition>", Arrays.asList("<expression>", "<relational operator>", "<expression>"));
 
         new Grammar("<relational operator>", singletonList("<"), singletonList(">"), singletonList("<="),
-                singletonList(">="), singletonList("==") , singletonList("!="));
+                singletonList(">="), singletonList("=="), singletonList("!="));
 
         createGrammar("<var declaration>",
                 Arrays.asList("<var_type>",
@@ -198,27 +228,27 @@ class Grammar {
                 Arrays.asList("/", "<factor>", "<term'>"), singletonList(EPSILON));
 
 
-        List<String>[] struct = new List[Phase2.identifiers.size() + Phase2.numbers.size() + 1 + Phase2.stringLiterals.size()];
+        List<String>[] struct = new List[identifiers.size() + numbers.size() + 1 + stringLiterals.size()];
         int index = 0;
-        for (int i = 0; i < Phase2.identifiers.size(); i++) {
-            struct[index++] = singletonList(Phase2.identifiers.get(i));
+        for (int i = 0; i < identifiers.size(); i++) {
+            struct[index++] = singletonList(identifiers.get(i));
         }
-        for (int i = 0; i < Phase2.numbers.size(); i++) {
-            struct[index++] = singletonList(Phase2.numbers.get(i));
+        for (int i = 0; i < numbers.size(); i++) {
+            struct[index++] = singletonList(numbers.get(i));
         }
-        for (int i = 0; i < Phase2.stringLiterals.size(); i++) {
-            struct[index++] = singletonList(Phase2.stringLiterals.get(i));
+        for (int i = 0; i < stringLiterals.size(); i++) {
+            struct[index++] = singletonList(stringLiterals.get(i));
         }
         struct[index] = Arrays.asList("(", "<expression>", ")");
         new Grammar("<factor>", struct);
 
         new Grammar("<statements>", Arrays.asList("<statement>", "<statements>"));
 
-        new Grammar("<statement>", singletonList("<assignment>"), singletonList("<var declaration>"),
+        new Grammar("<statement>", Arrays.asList("<assignment>", ";"), singletonList("<var declaration>"),
                 singletonList("<if statement>"), singletonList("<for statement>"), singletonList("<while statement>"));
 
-        createGrammar("<assignment>", Arrays.asList(ID, "=", "<expression>", ";"), Arrays.asList(ID, "++", ";"),
-                Arrays.asList(ID, "--", ";"), Arrays.asList(ID, "<opt>", "<expression>", ";"));
+        createGrammar("<assignment>", Arrays.asList(ID, "=", "<expression>"), Arrays.asList(ID, "++"),
+                Arrays.asList(ID, "--"), Arrays.asList(ID, "<opt>", "<expression>"));
 
         new Grammar("<opt>", singletonList("+="), singletonList("-="), singletonList("/="), singletonList("*="));
 
@@ -236,14 +266,14 @@ class Grammar {
 
 
     private static void createGrammar(String grammarName, List<String>... textHolders) {
-        List<String>[] struct = new List[textHolders.length * Phase2.identifiers.size()];
+        List<String>[] struct = new List[textHolders.length * identifiers.size()];
         int index = 0;
         for (List<String> rule : textHolders) {
-            for (String none : Phase2.identifiers) {
+            for (String id : identifiers) {
                 List<String> idRule = new ArrayList<>();
                 for (String part : rule) {
                     if (part.equals(ID))
-                        idRule.add(none);
+                        idRule.add(id);
                     else
                         idRule.add(part);
                 }
@@ -255,17 +285,17 @@ class Grammar {
     }
 
     static void printGrammar() {
-        System.out.println("\t\t" + "GRAMMAR");
+        print("\t\t" + "GRAMMAR");
         Set<String> keys = allGrammars.keySet();
         for (String key : keys) {
-            System.out.print(key + " : ");
+            print(key + " : ");
             List<String>[] structure = allGrammars.get(key);
             for (List<String> list : structure) {
-                System.out.print(list + " , ");
+                print(list + " , ");
             }
-            System.out.println();
+            print();
         }
-        System.out.println("\t\t" + "---------");
+        print("\t\t" + "---------");
     }
 }
 
@@ -274,6 +304,7 @@ class LL1Table {
 
     static void createTable() {
         HashMap<String, List<String>[]> allGrammars = Grammar.allGrammars;
+        // <program> : { {} }
         table.put("<program>", Map.of("int", allGrammars.get("<program>")));
         table.put("<if statement>", Map.of("if", allGrammars.get("<if statement>")));
         table.put("<for statement>", Map.of("for", allGrammars.get("<for statement>")));
@@ -283,13 +314,13 @@ class LL1Table {
         List<String>[] conditionStructure = allGrammars.get("<condition>");
         Map<String, List<String>[]> tRow = new HashMap<>();
         tRow.put("(", conditionStructure);
-        for (String id : Phase2.identifiers) {
+        for (String id : identifiers) {
             tRow.put(id, conditionStructure);
         }
-        for (String number : Phase2.numbers) {
+        for (String number : numbers) {
             tRow.put(number, conditionStructure);
         }
-        for (String literal : Phase2.stringLiterals) {
+        for (String literal : stringLiterals) {
             tRow.put(literal, conditionStructure);
         }
         table.put("<condition>", tRow);
@@ -319,13 +350,13 @@ class LL1Table {
         //<expression>
         List<String>[] expStructure = allGrammars.get("<expression>");
         tRow.put("(", expStructure);
-        for (String id : Phase2.identifiers) {
+        for (String id : identifiers) {
             tRow.put(id, expStructure);
         }
-        for (String num : Phase2.numbers) {
+        for (String num : numbers) {
             tRow.put(num, expStructure);
         }
-        for (String str : Phase2.stringLiterals) {
+        for (String str : stringLiterals) {
             tRow.put(str, expStructure);
         }
         table.put("<expression>", tRow);
@@ -336,7 +367,7 @@ class LL1Table {
         List<String>[] expPrimStructure = allGrammars.get("<expression'>");
         List<String>[] epsilon = new List[1];
         epsilon[0] = Arrays.asList(Grammar.EPSILON);
-        String arr[] = {">=", "<=", ">", "<", "==","!=", ";", ")"};
+        String arr[] = {">=", "<=", ">", "<", "==", "!=", ";", ")"};
         for (String op : arr) {
             tRow.put(op, epsilon);
         }
@@ -359,13 +390,13 @@ class LL1Table {
         //<term>
         List<String>[] termStructure = allGrammars.get("<term>");
         tRow.put("(", termStructure);
-        for (String id : Phase2.identifiers) {
+        for (String id : identifiers) {
             tRow.put(id, termStructure);
         }
-        for (String num : Phase2.numbers) {
+        for (String num : numbers) {
             tRow.put(num, termStructure);
         }
-        for (String str : Phase2.stringLiterals) {
+        for (String str : stringLiterals) {
             tRow.put(str, termStructure);
         }
         table.put("<term>", tRow);
@@ -374,7 +405,7 @@ class LL1Table {
 
         //<term'>
         List<String>[] termPrimStructure = allGrammars.get("<term'>");
-        String arr3[] = {">=", "<=", ">", "<", "==","!=", "+", "-", ";", "(" , ")"};
+        String arr3[] = {">=", "<=", ">", "<", "==", "!=", "+", "-", ";", "(", ")"};
         for (String op : arr3) {
             tRow.put(op, epsilon);
         }
@@ -400,9 +431,9 @@ class LL1Table {
         list[0] = factorStructure[factorStructure.length - 1];
         tRow.put("(", list);
         ArrayList<String> total = new ArrayList<>();
-        total.addAll(Phase2.identifiers);
-        total.addAll(Phase2.numbers);
-        total.addAll(Phase2.stringLiterals);
+        total.addAll(identifiers);
+        total.addAll(numbers);
+        total.addAll(stringLiterals);
 
         for (String check : total) {
             List<String>[] FS = new List[1];
@@ -421,7 +452,7 @@ class LL1Table {
             vartp[0] = stateStructure[1];
             tRow.put(vartype, vartp);
         }
-        for (String id : Phase2.identifiers) {
+        for (String id : identifiers) {
             List[] iden = new List[1];
             iden[0] = stateStructure[0];
             tRow.put(id, iden);
@@ -448,11 +479,11 @@ class LL1Table {
 
         //<statements>
         List<String>[] statesStructure = allGrammars.get("<statements>");
-        tRow.put("}" , epsilon);
+        tRow.put("}", epsilon);
         for (String varType : Tools.getVarTypes()) {
             tRow.put(varType, statesStructure);
         }
-        for (String id : Phase2.identifiers) {
+        for (String id : identifiers) {
             tRow.put(id, statesStructure);
         }
         String arr6[] = {"if", "for", "while"};
@@ -510,9 +541,9 @@ class LL1Table {
 
         //...................
 
-        for (String id : Phase2.identifiers) {
-            List<String>[] list2 = new List[]{Arrays.asList(id, "=", "<expression>", ";"), Arrays.asList(id, "++", ";"),
-                    Arrays.asList(id, "--", ";"), Arrays.asList(id, "<opt>", "<expression>", ";")};
+        for (String id : identifiers) {
+            List<String>[] list2 = new List[]{Arrays.asList(id, "=", "<expression>"), Arrays.asList(id, "++"),
+                    Arrays.asList(id, "--"), Arrays.asList(id, "<opt>", "<expression>")};
             tRow.put(id, list2);
 
         }
@@ -526,17 +557,17 @@ class LL1Table {
             Map<String, List<String>[]> map = table.get(terminal);
             if (map == null)
                 continue;
-            System.out.println(terminal + "  : ");
+            print(terminal + "  : ");
             for (String key :
                     map.keySet()) {
                 List<String>[] lists = map.get(key);
-                System.out.print(key + " : ");
+                print(key + " : ");
                 for (List<String> list : lists) {
-                    System.out.println(list);
+                    print(list.toString());
                 }
 
             }
-            System.out.println();
+            print();
         }
     }
 
@@ -544,5 +575,6 @@ class LL1Table {
     static List<String>[] getStructure(String nonTerminal, String terminal) {
         return table.get(nonTerminal).get(terminal);
     }
+
 
 }

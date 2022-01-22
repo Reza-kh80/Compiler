@@ -1,21 +1,32 @@
-import java.io.*;
-import java.util.*;
+package Compiler;
+
+import static Compiler.SyntaxAnalysis.identifiers;
+import static Compiler.SyntaxAnalysis.numbers;
+import static Compiler.SyntaxAnalysis.stringLiterals;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 
 
-public class Phase2 {
-    static List<String> tokens , identifiers , numbers , stringLiterals;
+public class LexicalAnalysis {
+
+    static List<String> tokens;
     static int cursor = 0;
 
-    public static void main(String[] args) throws IOException {
-        File input = new File(".//input.txt");
+
+    public static void start(String inputFileName , String outputFileName) throws IOException {
+        File input = new File(inputFileName);
 
         Scanner scanner = new Scanner(new FileInputStream(input));
         String s;
 
         tokens = new ArrayList<>();
-        identifiers = new ArrayList<>();
-        numbers = new ArrayList<>();
-        stringLiterals = new ArrayList<>();
+        Tools.symbolTable = new HashMap<>();
 
         int lineNum = 0;
         while (scanner.hasNext()) {
@@ -27,13 +38,13 @@ public class Phase2 {
                 continue;
 
             String lastWord = "";
-            while (cursor < line.length) {// "int if"
+            while (cursor < line.length) {
                 if (line[cursor] == '\"') {
                     StringBuilder stringLiteral = new StringBuilder("\"");
                     do {
                         cursor++;
                         if (cursor >= line.length) {
-                            System.out.println("\" expected in line " + lineNum);
+                            Tools.writeErrorToFile(Tools.LEXICAL_ANALYSIS , outputFileName ,"\" expected in line " + lineNum);
                             return;
                         }
                         stringLiteral.append(line[cursor]);
@@ -61,20 +72,23 @@ public class Phase2 {
                         identifiers.add(word);
                         Tools.addToSymbols(word, lastWord);
                     } else {
-                        System.out.println("error in line " + lineNum + " : " + word + " is not define");
+                        Tools.writeErrorToFile(Tools.LEXICAL_ANALYSIS , outputFileName ,
+                                Tools.LEXICAL_ANALYSIS + " error in line " + lineNum + " : " + word + " is not define");
                         return;
                     }
                 } else if (!Tools.isWhiteSpace(word)) {
-                    System.out.println("error in line " + lineNum + " : " + word + " is not define");
+                    Tools.writeErrorToFile(Tools.LEXICAL_ANALYSIS , outputFileName
+                            , Tools.LEXICAL_ANALYSIS + " error in line " + lineNum + " : " + word + " is not define");
                     return;
                 }
                 lastWord = word;
 
             }
 
+
         }
 
-        writeToOutputFile(".//output2.txt", tokens);
+        Tools.writeTokensToOutputFile(outputFileName , tokens);
 
     }
 
@@ -90,7 +104,7 @@ public class Phase2 {
                         return tempStr.toString();
                     }
 
-                    String temp2 = tempStr.toString()+ line[cursor]; //++
+                    String temp2 = tempStr.toString() + line[cursor]; //++
 
                     if (Tools.isOperator(temp2)) {
                         cursor++;
@@ -111,19 +125,15 @@ public class Phase2 {
         return tempStr.toString();
     }
 
-    static void writeToOutputFile(String fileName, List<String> tokens) throws IOException {
-        File phase2Output = new File(fileName);
-        phase2Output.createNewFile();
-        Formatter formatter = new Formatter(phase2Output);
-        for (String token : tokens) {
 
-            formatter.format(token + "\n");
-        }
-        formatter.close();
-    }
+
+
+
+
+
 }
 /*
-int main(){
+int start(){
 int a=3;
 float b=5;
 int c=7;
