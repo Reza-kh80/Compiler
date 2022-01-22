@@ -1,7 +1,7 @@
 # Compiler
 
 
-## (برسی واژگان) توضیحات فاز دوم  
+## توضیحات فاز دوم 
 
 در فاز دوم پروژه سعی بر بررسی کلمات، اپراتورها، کلمات کلیدی، آیدی ها و... را داشتیم. هدف این بود تا به برنامه یک قطعه کد به عنوان
 ورودی داده شود و برنامه با بررسی جزئیات برنامه دنباله ای از توکن های بدست امده را به خروجی تحویل دهد.
@@ -15,7 +15,7 @@
 ![DFA](https://s4.uupload.ir/files/screenshot_2021-11-29_170022_4q1d.jpg)
 
 
-## نحوه‌ی اجرای خان دوم:
+## نحوه‌ی اجرای فاز دوم:
 ابتدا از طریق لینک زیر فایل Compiler.zip را دانلود کنید
 سپس فایل فشرده را استخراج کنید
 
@@ -30,13 +30,12 @@ https://www.dropbox.com/s/sndvi1pcum2gq6z/Compiler.zip?dl=1
 تمام فایل کلاس ها هم در پوشه src موجود است
 
 
-## (برسی دستور زبان)توضیحات فاز سوم
-
+## توضیحات فاز سوم
 در فاز سوم ابتدا گرامر تولید کردیم و سپس با استفاده از جداول first و follow جدول ll1 را رسم کردیم. 
 سپس گرامر و جدول را در پروژه پیاده‌سازی کردیم و در نهایت از طریق توکن های به‌دست اماده در فاز دوم و جدول ll1 درخت پارس را تولید کردیم
 
-![GRAMMAR](https://docs.google.com/document/d/1mG9heVPoULbgHrJLcSdEYPJmgtsj5df0ojlpV4I2J1g/edit?usp=sharing)
-![LL1_TABLE](https://docs.google.com/spreadsheets/d/1wW4Hoh3cCdoQ_71NzaZRJAiOqrRiMZJtexfvWC-5vhE/edit?usp=sharing)
+[GRAMMAR](https://docs.google.com/document/d/1mG9heVPoULbgHrJLcSdEYPJmgtsj5df0ojlpV4I2J1g/edit?usp=sharing)
+[LL1_TABLE](https://docs.google.com/spreadsheets/d/1wW4Hoh3cCdoQ_71NzaZRJAiOqrRiMZJtexfvWC-5vhE/edit?usp=sharing)
 
 
 
